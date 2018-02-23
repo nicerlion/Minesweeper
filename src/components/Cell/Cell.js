@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './index.css';
+import mineImage from './assets/img/mine.png';
+import flagImage from './assets/img/flag.png';
+import transparentImage from './assets/img/transparent.png';
 
 
 export default class Cell extends Component {
@@ -38,23 +41,23 @@ export default class Cell extends Component {
         if (this.state.isOpen) {
             if (this.state.hasMine) {
                 return (
-                    <div><span>Mine</span></div>
+                    <div style={{'textAlign': 'center'}}><img alt="img" src={mineImage} width="30" height="30" /></div>
                 )
             } else {
-                return (<div><span>Open</span></div>);
+                return (<div style={{ 'textAlign': 'center' }}><img alt="img" src={transparentImage} width="30" height="30" /></div>);
             }
         } else if (this.state.hasFlag) {
             return (
-                <div><span>Flag</span></div>
+                <div style={{ 'textAlign': 'center' }}><img alt="img" src={flagImage} width="30" height="30" /></div>
             )
         } else {
-            return (<div><span>Simple</span></div>);
+            return (<div style={{ 'textAlign': 'center' }}><img alt="img" src={transparentImage} width="30" height="30" /></div>);
         }
     }
 
     render () {
         return (
-            <td className="cell" onClick={this.open}>{this.cell}</td>
+            <td className={'cell ' + (this.state.isOpen ? 'opened': '')} onClick={this.open}>{this.cell}</td>
         );
     }
 }

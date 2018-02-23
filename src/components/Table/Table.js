@@ -10,10 +10,7 @@ export default class Table extends Component {
         this.initRows = this.initRows.bind(this);
         let table = this.initRows();
 
-        this.state = {
-            table,
-            preparedToOpen: []
-        }
+        this.state = { table };
 
         this.setMines = this.setMines.bind(this);
         this.open = this.open.bind(this);
@@ -21,6 +18,19 @@ export default class Table extends Component {
 
     componentDidMount() {
         this.setMines();
+        this.props.onInit && this.props.onInit(this);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (!prevState.table && this.state.table) {
+            this.setMines();
+        }
+    }
+
+    reset() {
+        let table = this.initRows();
+        console.log(table);
+        this.setState({ table: [...table] });
     }
 
     /** 
@@ -81,7 +91,6 @@ export default class Table extends Component {
         let _cell = table[cell.y][cell.x];
         _cell.flag = !_cell.flag;
         this.setState({ table });
-        this.props.checkFlagNum(_cell.flag ? 1 : -1);
     }
 
     /**
@@ -105,17 +114,17 @@ export default class Table extends Component {
     }
 
     openAround(cell) {
-        // for (let row = -1; row <= 1; row++) {
-        //     for (let col = -1; col <= 1; col++) {
-        //         if (cell.y + row >= 0 && cell.x + col >= 0 &&
-        //             cell.y + row < this.state.table.length &&
-        //             cell.x + col < this.state.table[0].length &&
-        //             !this.state.table[cell.y + row][cell.x + col].hasMine &&
-        //             !this.state.table[cell.y + row][cell.x + col].isOpened) {
-        //             this.open(this.state.table[cell.y + row][cell.x + col]);
-        //         }
-        //     }
-        // }
+        for (let row = -1; row <= 1; row++) {
+            for (let col = -1; col <= 1; col++) {
+                if (cell.y + row >= 0 && cell.x + col >= 0 &&
+                    cell.y + row < this.state.table.length &&
+                    cell.x + col < this.state.table[0].length &&
+                    !this.state.table[cell.y + row][cell.x + col].mine &&
+                    !this.state.table[cell.y + row][cell.x + col].open) {
+                    this.open(this.state.table[cell.y + row][cell.x + col]);
+                }
+            }
+        }
     }
 
     render() {
