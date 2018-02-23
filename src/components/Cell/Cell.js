@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './index.css';
 
 
 export default class Cell extends Component {
@@ -9,10 +10,12 @@ export default class Cell extends Component {
         this.state = {
             hasMine: props.mine || false,
             hasFlag: props.flag || false,
-            isOpen: props.open || false
+            isOpen: props.open || false,
+            _meta: props._meta
         }
 
-        this.getContainerClasses = this.getContainerClasses.bind(this);
+        // this.getContainerClasses = this.getContainerClasses.bind(this);
+        this.open = this.open.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -22,11 +25,13 @@ export default class Cell extends Component {
         if (prevProps.flag !== this.props.flag) {
             this.setState({ hasFlag: this.props.flag });
         }
+        if (prevProps.open !== this.props.open) {
+            this.setState({ isOpen: this.props.open });
+        }
     }
 
     open(event) {
-        this.props.open && this.props.open(this);
-        this.setState({ isOpen: true });
+        this.props.onOpen && this.props.onOpen(this);
     }
 
     get cell() {
@@ -49,7 +54,7 @@ export default class Cell extends Component {
 
     render () {
         return (
-            <div onClick={this.open}>{this.cell}</div>
+            <td className="cell" onClick={this.open}>{this.cell}</td>
         );
     }
 }
