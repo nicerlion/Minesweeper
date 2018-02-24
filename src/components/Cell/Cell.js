@@ -17,8 +17,8 @@ export default class Cell extends Component {
             _meta: props._meta
         }
 
-        // this.getContainerClasses = this.getContainerClasses.bind(this);
         this.open = this.open.bind(this);
+        this.mark = this.mark.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -35,6 +35,11 @@ export default class Cell extends Component {
 
     open(event) {
         this.props.onOpen && this.props.onOpen(this);
+    }
+
+    mark(event) {
+        event.preventDefault();
+        this.props.onMark && this.props.onMark(this);
     }
 
     get cell() {
@@ -57,7 +62,7 @@ export default class Cell extends Component {
 
     render () {
         return (
-            <td className={'cell ' + (this.state.isOpen ? 'opened': '')} onClick={this.open}>{this.cell}</td>
+            <td className={'cell ' + (this.state.isOpen ? 'opened' : '')} onContextMenu={this.mark} onClick={this.open}>{this.cell}</td>
         );
     }
 }

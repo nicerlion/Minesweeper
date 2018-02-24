@@ -63,30 +63,35 @@ export default class Table extends Component {
 
 
     open(cellInstance) {
-        let cell = 'state' in cellInstance ? cellInstance.state._meta: cellInstance;
-
-        let numMines = this.getMinesAroundCell(cell);
-        let table = this.state.table;
-
-        table[cell.y][cell.x].open = true;
-        // table[cell.y][cell.x].count = cell.mine ? "b" : numMines;
-
-        this.setState({ table });
-
-        if (!cell.mine && numMines === 0) {
-            this.openAround(cell);
-        }
-
-        if (cell.mine) {  // game over
-
+        if (this.props.runGame) {
+            let cell = 'state' in cellInstance ? cellInstance.state._meta: cellInstance;
+    
+            let numMines = this.getMinesAroundCell(cell);
+            let table = this.state.table;
+    
+            table[cell.y][cell.x].open = true;
+    
+            this.setState({ table });
+    
+            if (!cell.mine && numMines === 0) {
+                this.openAround(cell);
+            }
+    
+            if (cell.mine) {  // game over
+                let reset = window.confirm('Game is over!');
+                this.props.onGameOver && this.props.onGameOver(reset);
+            }
         }
     }
 
-    mark(cell) {
-        let table = this.state.table;
-        let _cell = table[cell.y][cell.x];
-        _cell.flag = !_cell.flag;
-        this.setState({ table });
+    mark(cellInstance) {
+        if (this.props.runGame) {
+            let cell = 'state' in cellInstance ? cellInstance.state._meta : cellInstance;
+            let table = this.state.table;
+            let _cell = table[cell.y][cell.x];
+            _cell.flag = !_cell.flag;
+            this.setState({ table });
+        }
     }
 
     /**

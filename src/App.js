@@ -10,7 +10,8 @@ class App extends Component {
         this.state = {
             numCols: 10,
             numRows: 10,
-            numMines: 5
+            numMines: 5,
+            runGame: true
         }
     }
 
@@ -19,7 +20,16 @@ class App extends Component {
     }
 
     reset() {
+        this.setState({ runGame: true });
         this.table.reset();
+    }
+
+    onGameOver(reset) {
+        if (reset) {
+            this.reset();
+        } else {
+            this.setState({ runGame: false })
+        }
     }
 
     render() {
@@ -40,13 +50,11 @@ class App extends Component {
                     </div>
                     <div style={{ 'textAlign': 'center', 'width': '100%' }}>
                         <button className="button-restart" onClick={this.reset.bind(this)}>SET</button>
+                        <button className="button-restart" onClick={this.reset.bind(this)}>RESTART</button>
                     </div>
                 </div>
                 <div style={{ 'textAlign': 'center', 'width': '100%' }}>
-                    <Table onInit={this.onInit.bind(this)} numRows={this.state.numRows} numCols={this.state.numCols} numMines={this.state.numMines} />
-                </div>
-                <div style={{ 'textAlign': 'center', 'width': '100%' }}>
-                    <button className="button-restart" onClick={this.reset.bind(this)}>RESTART</button>
+                    <Table onGameOver={this.onGameOver.bind(this)} runGame={this.state.runGame} onInit={this.onInit.bind(this)} numRows={this.state.numRows} numCols={this.state.numCols} numMines={this.state.numMines} />
                 </div>
             </div>
         );
