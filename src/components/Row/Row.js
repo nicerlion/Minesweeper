@@ -6,16 +6,12 @@ export default class Row extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            cells: props.cells
-        }
     }
 
     render() {
         return (
             <tr className="row">
-                {this.state.cells.map((cell, index) => {
+                {this.props.cells.map((cell, index) => {
                     return <Cell key={index} _meta={cell} open={cell.open} mine={cell.mine} onOpen={this.props.open} onMark={this.props.mark} />
                 })}
             </tr>

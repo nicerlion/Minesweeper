@@ -21,15 +21,9 @@ export default class Table extends Component {
         this.props.onInit && this.props.onInit(this);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (!prevState.table && this.state.table) {
-            this.setMines();
-        }
-    }
-
     reset() {
         let table = this.initRows();
-        console.log(table);
+        table = this.setMines(table);
         this.setState({ table: [...table] });
     }
 
@@ -54,15 +48,17 @@ export default class Table extends Component {
     /**
      * Function to set mines in board
      */
-    setMines() {
+    setMines(table) {
+        table = table || this.state.table;
         for (let index = 0; index < this.props.numMines; index++) {
-            let cell = this.state.table[Math.floor(Math.random() * this.props.numRows)][Math.floor(Math.random() * this.props.numCols)];
+            let cell = table[Math.floor(Math.random() * this.props.numRows)][Math.floor(Math.random() * this.props.numCols)];
             if (cell.mine) {
                 index--;
             } else {
                 cell.mine = true;
             }
         }
+        return table;
     }
 
 
